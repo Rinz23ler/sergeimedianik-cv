@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sergei Medianik — International Truck Driver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:     #0a0a0f;
+  --dark:      #151520;
+  --panel:     rgba(255,255,255,0.08);
+  --border:    rgba(255,255,255,0.15);
+  --white:     #ffffff;
+  --muted:     rgba(255,255,255,0.6);
+  --amber:     #76a9fa;
+  --amber2:    #4f83f7;
+  --glow:      rgba(118,169,250,0.3);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: linear-gradient(135deg, #0a0a0f 0%, #151520 25%, #1a1a2e 50%, #16213e 75%, #0f3460 100%);
+  background-attachment: fixed;
+  color: var(--white);
+  font-family: 'Targo','Barlow','Helvetica Neue',sans-serif;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 64px;
+  background: rgba(15,25,35,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.nav-logo { font-family:'Syne',sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo em { color: var(--amber); font-style: normal; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { width: 24px; height: 2px; background: var(--white); display: block; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 48px 80px;
+}
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  opacity: 1;
+  will-change: transform;
+  transform-origin: center top;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(13,14,16,0.88) 0%,
+    rgba(13,14,16,0.75) 18%,
+    rgba(13,14,16,0.3) 28%,
+    rgba(13,14,16,0.0) 40%
+  );
+}
+.hero-content { position: relative; z-index: 2; max-width: 700px; }
+.hero-tags { z-index: 2; }
+.scroll-hint { z-index: 2; }
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 24px;
+}
+.hero-eyebrow::before { content: ""; width: 40px; height: 1px; background: var(--amber); }
+.hero h1 { font-family:'Targo','Barlow Condensed',sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 28px;
+}
+.hero h1 em { font-style: normal; color: var(--amber); display: inline; }
+.hero-sub {
+  font-size: 17px;
+  color: #9aa0ae;
+  max-width: 500px;
+  margin-bottom: 40px;
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+.btn-amber { background: var(--amber); color: #0a0a0f; box-shadow: 0 0 20px var(--glow); }
+.btn-amber:hover { background: var(--amber2); transform: translateY(-2px); }
+.btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
+.btn-outline:hover { border-color: var(--white); }
+
+.hero-tags {
+  position: absolute;
+  right: 48px;
+  bottom: 64px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: 360px;
+  justify-content: flex-end;
+}
+.hero-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid rgba(61,111,245,0.45);
+  color: var(--amber);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.scroll-line { width: 32px; height: 1px; background: var(--muted); animation: sp 2s ease-in-out infinite; }
+@keyframes sp { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+/* SECTIONS */
+section { padding: 96px 48px; }
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 16px;
+}
+.section-title { font-family:'Syne',sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 56px;
+  line-height: 1.05;
+}
+.section-title em { font-style: normal; color: var(--amber); }
+.maxw { max-width: 1100px; margin: 0 auto; }
+
+/* ABOUT */
+#about {
+  padding: 0;
+  background: rgba(21,21,32,0.7);
+}
+/* Full-width photo on top */
+.about-photo-bg {
+  width: 100%;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+}
+.about-photo-bg img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* Blur at top 5% — smooths transition from video hero */
+.about-photo-bg::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8%;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  z-index: 1;
+}
+/* Fade at bottom into text strip */
+.about-photo-bg::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--dark));
+  z-index: 1;
+}
+/* Text strip below photo */
+.about-inner {
+  position: relative;
+  z-index: 2;
+  padding: 48px 80px 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  /* slight frosted dark bg */
+  background: rgba(8,14,34,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.about-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.about-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.about-text p { font-size: 17px; color: #b0b8c4; margin-bottom: 20px; }
+.fact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.fact-row:first-child { border-top: 1px solid var(--border); }
+.fact-k { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.fact-v { font-size: 15px; font-weight: 600; text-align: right; }
+
+/* EXPERIENCE */
+#experience { background: rgba(10,10,15,0.5); }
+.xp-main {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  padding: 48px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.xp-main::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--amber);
+}
+.xp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.xp-title { font-size: 22px; font-weight: 800; }
+.xp-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: var(--amber);
+  color: var(--black);
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+.xp-badge.past {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.xp-company { font-size: 14px; color: var(--amber); margin-bottom: 24px; letter-spacing: 0.5px; }
+.xp-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+.xp-list li {
+  font-size: 14px;
+  color: #9aa0ae;
+  padding-left: 16px;
+  position: relative;
+}
+.xp-list li::before { content: "→"; position: absolute; left: 0; color: var(--amber); }
+
+.xp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 16px; }
+.xp-card { background: rgba(255,255,255,0.06); padding: 28px; transition: background 0.2s; }
+.xp-card:hover { background: #1f2330; }
+.xp-card-period { font-size: 11px; color: var(--amber); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.xp-card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.xp-card-co { font-size: 13px; color: var(--muted); }
+
+/* SKILLS */
+#skills { background: rgba(21,21,32,0.7); }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+.skill-group h3 {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  color: var(--white);
+  transition: all 0.2s;
+}
+.tag:hover { border-color: var(--amber); color: var(--amber); }
+.tag.solid { background: var(--amber); color: var(--black); border-color: var(--amber); }
+
+/* EDUCATION */
+#education { background: rgba(10,10,15,0.5); }
+.edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.edu-card { border-top: 2px solid var(--amber); padding-top: 20px; }
+.edu-year { font-size: 12px; color: var(--amber); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.edu-inst { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.edu-field { font-size: 14px; color: var(--muted); }
+
+.lang-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.lang-name { font-size: 16px; font-weight: 700; }
+.lang-bar { display: flex; gap: 6px; align-items: center; }
+.lang-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+.lang-dot.on { background: var(--amber); }
+.lang-level { font-size: 12px; color: var(--muted); margin-left: 10px; }
+
+.certs { margin-top: 48px; }
+.cert-item {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  align-items: baseline;
+}
+.cert-yr { font-size: 12px; color: var(--amber); font-weight: 700; min-width: 40px; }
+.cert-name { font-size: 15px; }
+.cert-org { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+/* CONTACT */
+#contact { background: rgba(21,21,32,0.7); text-align: center; }
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin: 56px 0;
+}
+.ccard { background: rgba(255,255,255,0.06); padding: 36px 28px; }
+.ccard-ico { font-size: 28px; margin-bottom: 12px; }
+.ccard-k { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.ccard-v { font-size: 16px; font-weight: 600; }
+.ccard-v a { color: var(--white); text-decoration: none; }
+.ccard-v a:hover { color: var(--amber); }
+
+footer {
+  background: rgba(10,10,15,0.5);
+  border-top: 1px solid var(--border);
+  padding: 28px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* REVEAL - disabled, all visible */
+.reveal { opacity: 1; transform: none; filter: none; }
+.reveal.in { opacity: 1; transform: none; filter: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: rgba(21,21,32,0.7); padding: 24px; gap: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+}
+@media (max-width: 768px) {
+  section { padding: 64px 24px; }
+  .hero { padding: 100px 24px 80px; }
+  .about-inner { grid-template-columns: 1fr; padding: 40px 24px; gap: 32px; }
+  .about-photo-bg { height: 50vh; }
+  .skills-grid, .edu-grid { grid-template-columns: 1fr; gap: 40px; }
+  .xp-list { grid-template-columns: 1fr; }
+  .xp-grid { grid-template-columns: 1fr; }
+  .contact-cards { grid-template-columns: 1fr; }
+  .hero-tags { display: none; }
+  .scroll-hint { display: none; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; filter: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* SMALL PHONES */
+@media (max-width: 480px) {
+  nav { padding: 0 16px; }
+  .nav-logo { font-size: 13px; letter-spacing: 2px; }
+  .lang-switch { margin-left: 12px; }
+  .hero { padding: 88px 20px 64px; }
+  .hero h1 { letter-spacing: -0.5px; }
+  .hero-sub { font-size: 15px; }
+  .hero-ctas { flex-direction: column; gap: 12px; }
+  .hero-ctas .btn { width: 100%; text-align: center; }
+  section { padding: 48px 20px; }
+  .about-inner { padding: 32px 20px; gap: 24px; }
+  .about-photo-bg { height: 40vh; }
+  .xp-main { padding: 28px 20px; }
+  .xp-title { font-size: 19px; }
+  .xp-head { gap: 12px; }
+  .ccard { padding: 28px 18px; }
+  footer { padding: 20px; }
+  /* Skip the video download/decoding on small phones — show the static
+     hero photo instead to save mobile data */
+  .hero-video { display: none; }
+  .hero { background-image: url('profile-photo.png'); background-size: cover; background-position: center top; }
+}
+
+/* LANG SWITCHER */
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 24px;
+}
+.lang-btn {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.lang-btn.active {
+  background: var(--amber);
+  color: #0a0a0f;
+  border-color: var(--amber);
+}
+.lang-btn:hover:not(.active) {
+  border-color: var(--amber);
+  color: var(--white);
+}
+/* hide DE content by default */
+[data-de] { display: none; }
+body.de [data-en] { display: none; }
+body.de [data-de] { display: revert; }
+
+/* ── NEON HOVER on cards ─────────────────────────────── */
+.xp-main:hover {
+  border-color: var(--amber);
+  box-shadow: 0 0 18px rgba(118,169,250,0.25), 0 0 40px rgba(118,169,250,0.1), inset 0 0 20px rgba(118,169,250,0.04);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.xp-card:hover {
+  box-shadow: 0 0 14px rgba(118,169,250,0.3), 0 0 30px rgba(118,169,250,0.1);
+  border: 1px solid rgba(118,169,250,0.4);
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+.ccard:hover {
+  box-shadow: 0 0 20px rgba(118,169,250,0.3), 0 0 50px rgba(118,169,250,0.1);
+  border: 1px solid rgba(118,169,250,0.5);
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+.edu-card:hover {
+  box-shadow: 0 0 16px rgba(118,169,250,0.25);
+  transition: box-shadow 0.3s ease;
+}
+.tag:hover {
+  box-shadow: 0 0 12px rgba(118,169,250,0.4);
+}
+.btn-amber:hover {
+  box-shadow: 0 0 24px rgba(118,169,250,0.6), 0 0 60px rgba(118,169,250,0.2) !important;
+}
+
+/* ── CURSOR SPOTLIGHT ────────────────────────────────── */
+#cursor-glow {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(118,169,250,0.08) 0%, rgba(118,169,250,0.03) 40%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+</style>
+</head>
+<body>
+
+<div id="cursor-glow"></div>
+<nav>
+  <a class="nav-logo" href="#">Sergei <em>Medianik</em></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about"><span data-en>Profile</span><span data-de>Profil</span></a></li>
+    <li><a href="#experience"><span data-en>Experience</span><span data-de>Erfahrung</span></a></li>
+    <li><a href="#skills"><span data-en>Skills</span><span data-de>Kenntnisse</span></a></li>
+    <li><a href="#education"><span data-en>Education</span><span data-de>Ausbildung</span></a></li>
+    <li><a href="#contact"><span data-en>Contact</span><span data-de>Kontakt</span></a></li>
+  </ul>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('en')" id="btnEN">EN</button>
+    <button class="lang-btn" onclick="setLang('de')" id="btnDE">DE</button>
+  </div>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <video class="hero-video" autoplay loop muted playsinline poster="profile-photo.png">
+    <source src="highway-loop.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span data-en>International Heavy Goods Transport</span><span data-de>Internationaler Schwertransport</span></div>
+    <h1><span data-en>Hi, I am <em>Sergei</em></span><span data-de>Hallo, ich bin <em>Sergei</em></span></h1>
+    <p class="hero-sub"><span data-en>Professional truck driver (CE / ADR Tank) operating across Europe.</span><span data-de>Berufskraftfahrer (CE / ADR Tank) im internationalen Einsatz in Europa.</span></p>
+    <div class="hero-ctas">
+      <a class="btn btn-amber" href="cv-sergei-medianik.pdf" download="CV_Sergei_Medianik.pdf" id="dlBtn"><span data-en>Download CV (PDF)</span><span data-de>Lebenslauf herunterladen (PDF)</span></a>
+      <a class="btn btn-outline" href="#contact"><span data-en>Get in touch</span><span data-de>Kontakt aufnehmen</span></a>
+    </div>
+  </div>
+  <div class="hero-tags">
+    <span class="hero-tag">Category CE</span>
+    <span class="hero-tag">Code 95</span>
+    <span class="hero-tag">ADR Tank</span>
+    <span class="hero-tag">EU + UK</span>
+    <span class="hero-tag"><span data-en>Digital Driver Card</span><span data-de>Digitale Fahrerkarte</span></span>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div><span data-en>Scroll</span><span data-de>Scrollen</span></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-photo-bg">
+    <img src="profile-photo.png" alt="Sergei Medianik">
+  </div>
+  <div class="about-inner">
+    <div class="about-left">
+      <div class="section-label reveal from-left d1"><span data-en>Profile</span><span data-de>Profil</span></div>
+      <h2 class="section-title reveal from-left d2"><span data-en>Who I <em>am</em></span><span data-de>Wer ich <em>bin</em></span></h2>
+      <div class="about-text reveal d3">
+        <p><span data-en>Experienced 40-tonne truck driver with international driving practice and a technical higher-education degree. Confident handling of modern commercial vehicles, with thorough knowledge of safety regulations and logistics processes.</span><span data-de>Erfahrener LKW-Fahrer (40 Tonnen) mit internationaler Fahrpraxis und technischem Hochschulabschluss. Sicherer Umgang mit modernen Nutzfahrzeugen sowie umfassende Kenntnisse der Sicherheitsvorschriften und Logistikprozesse.</span></p>
+        <p><span data-en>Experienced in delivery documentation, customer service, and close coordination with dispatchers. A previous career as an engineer and business analyst enables fast adaptation to new roles and responsibilities.</span><span data-de>Erfahrung in der Dokumentation, im Kundenservice sowie in der Zusammenarbeit mit Disponenten. Frühere Tätigkeit als Ingenieur und Business Analyst ermöglicht schnelle Einarbeitung in neue Aufgabenbereiche.</span></p>
+      </div>
+    </div>
+    <div class="about-right reveal d3">
+      <div class="fact-row"><span class="fact-k"><span data-en>Location</span><span data-de>Standort</span></span><span class="fact-v"><span data-en>Duisburg, Germany</span><span data-de>Duisburg, Deutschland</span></span></div>
+      <div class="fact-row"><span class="fact-k"><span data-en>Nationality</span><span data-de>Staatsangehörigkeit</span></span><span class="fact-v">Russian</span></div>
+      <div class="fact-row"><span class="fact-k"><span data-en>Date of birth</span><span data-de>Geburtsdatum</span></span><span class="fact-v">13 July 1990, Kostanaj, Kazakhstan</span></div>
+      <div class="fact-row"><span class="fact-k"><span data-en>Current employer</span><span data-de>Aktueller Arbeitgeber</span></span><span class="fact-v">Ruhrkraft Spedition GmbH</span></div>
+      <div class="fact-row"><span class="fact-k"><span data-en>Licenses</span><span data-de>Führerscheine</span></span><span class="fact-v">B, BE, C, CE · Code 95 · ADR Tank</span></div>
+      <div class="fact-row"><span class="fact-k"><span data-en>Email</span><span data-de>E-Mail</span></span><span class="fact-v">medianik7sergei@gmail.com</span></div>
+      <div class="fact-row"><span class="fact-k"><span data-en>Phone</span><span data-de>Telefon</span></span><span class="fact-v">+36 20 459 21 44</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="maxw">
+    <div class="section-label reveal from-left d1"><span data-en>Career</span><span data-de>Karriere</span></div>
+    <h2 class="section-title reveal d2"><span data-en>Work <em>Experience</em></span><span data-de>Berufs<em>erfahrung</em></span></h2>
+
+    <!-- Current job -->
+    <div class="xp-main reveal d2">
+      <div class="xp-head">
+        <div class="xp-title">LKW-Fahrer CE / ADR Tank</div>
+        <div class="xp-badge"><span data-en>Nov 2025 — Present</span><span data-de>Nov 2025 — heute</span></div>
+      </div>
+      <div class="xp-company">Ruhrkraft Spedition GmbH · <span data-en>Duisburg, Germany</span><span data-de>Duisburg, Deutschland</span></div>
+      <ul class="xp-list">
+        <li><span data-en>Transport of liquid chemical and hazardous goods by tank trailer (ADR)</span><span data-de>Transport von flüssigen Chemie- und Gefahrgütern mit Tankauflieger (ADR)</span></li>
+        <li><span data-en>International routes: Belgium, Netherlands, Luxembourg, France, Spain</span><span data-de>Internationale Transporte in Belgien, Niederlande, Luxemburg, Frankreich und Spanien</span></li>
+        <li><span data-en>Independent loading and unloading operations</span><span data-de>Selbstständige Durchführung von Be- und Entladevorgängen</span></li>
+        <li><span data-en>Operation of hoses, couplings, and unloading equipment</span><span data-de>Bedienung von Schläuchen, Kupplungen und Entladeeinrichtungen</span></li>
+        <li><span data-en>Discharge of liquid products using compressors</span><span data-de>Entladung von flüssigen Produkten mittels Kompressor</span></li>
+        <li><span data-en>Compliance with ADR, safety, and hazardous goods regulations</span><span data-de>Einhaltung von ADR-, Sicherheits- und Gefahrgutvorschriften</span></li>
+        <li><span data-en>Monitoring of driving, rest, and working hours per legal requirements</span><span data-de>Kontrolle von Lenk-, Ruhe- und Arbeitszeiten gemäß gesetzlichen Vorgaben</span></li>
+        <li><span data-en>Vehicle and equipment maintenance and cleaning</span><span data-de>Pflege und Reinigung von Fahrzeugen sowie technischer Ausrüstung</span></li>
+        <li><span data-en>Safe, economical, and anticipatory driving style</span><span data-de>Sicherer, wirtschaftlicher und vorausschauender Fahrstil</span></li>
+        <li><span data-en>On-time deliveries and professional communication with clients and dispatch</span><span data-de>Termingerechte Lieferungen und professionelle Kommunikation mit Kunden und Disposition</span></li>
+      </ul>
+    </div>
+
+    <!-- Previous main job -->
+    <div class="xp-main reveal d3">
+      <div class="xp-head">
+        <div class="xp-title">Truck Driver (40t)</div>
+        <div class="xp-badge past">Jan 2023 — Okt 2025</div>
+      </div>
+      <div class="xp-company">Waberer's International · <span data-en>Budapest, Hungary</span><span data-de>Budapest, Ungarn</span></div>
+      <ul class="xp-list">
+        <li><span data-en>Tractor units: Daf XF 106, Daf XF New, Volvo FH 16, Renault T480</span><span data-de>Zugmaschinen: Daf XF 106, Daf XF New, Volvo FH 16, Renault T480</span></li>
+        <li><span data-en>Trailers: Schmitz, Kögel, Berger, Krone</span><span data-de>Auflieger: Schmitz, Kögel, Berger, Krone</span></li>
+        <li><span data-en>International routes across Europe and the UK</span><span data-de>Internationale Fahrten in Europa und Großbritannien</span></li>
+        <li><span data-en>Ferries and Eurotunnel crossings</span><span data-de>Fähren- und Eurotunnel-Überquerungen</span></li>
+        <li><span data-en>Route planning with navigation systems</span><span data-de>Routenplanung mit Navigationssystemen</span></li>
+        <li><span data-en>Precise maneuvering in urban and industrial areas</span><span data-de>Präzises Manövrieren in städtischen und Industriegebieten</span></li>
+        <li><span data-en>Delivery and trip documentation</span><span data-de>Liefer- und Fahrtdokumentation</span></li>
+        <li><span data-en>Dispatcher coordination and scheduling</span><span data-de>Zusammenarbeit mit Disponenten und Terminplanung</span></li>
+        <li><span data-en>Forklift and electric pallet jack operation</span><span data-de>Bedienung von Gabelstapler und elektrischem Hubwagen</span></li>
+        <li><span data-en>Cargo: vehicle parts, glass, IT equipment, food, paper, non-hazardous flammable freight</span><span data-de>Ladegüter: Fahrzeugteile, Glas, IT-Ausrüstung, Lebensmittel, Papier, ungefährliche brennbare Fracht</span></li>
+      </ul>
+    </div>
+
+    <!-- Earlier jobs grid -->
+    <div class="xp-grid">
+      <div class="xp-card reveal scale-in d1">
+        <div class="xp-card-period">2021 — 2022</div>
+        <div class="xp-card-title"><span data-en>Business Analyst (IT)</span><span data-de>Business Analyst (IT)</span></div>
+        <div class="xp-card-co">R-Tech, Russia</div>
+      </div>
+      <div class="xp-card reveal scale-in d2">
+        <div class="xp-card-period">2020 — 2021</div>
+        <div class="xp-card-title"><span data-en>Business Analyst (E-Commerce)</span><span data-de>Business Analyst (E-Commerce)</span></div>
+        <div class="xp-card-co">Group365, Russia</div>
+      </div>
+      <div class="xp-card reveal scale-in d3">
+        <div class="xp-card-period">2018 — 2020</div>
+        <div class="xp-card-title"><span data-en>Senior Internal Audit Specialist</span><span data-de>Leitender Spezialist für interne Audits</span></div>
+        <div class="xp-card-co">ZAO "VIZ-Stal", PAO NLMK, Russia</div>
+      </div>
+      <div class="xp-card reveal scale-in d2">
+        <div class="xp-card-period">2017 — 2018</div>
+        <div class="xp-card-title"><span data-en>Business Analyst</span><span data-de>Business Analyst</span></div>
+        <div class="xp-card-co">ZAO "VIZ-Stal", PAO NLMK, Russia</div>
+      </div>
+      <div class="xp-card reveal scale-in d3">
+        <div class="xp-card-period">2016 — 2017</div>
+        <div class="xp-card-title"><span data-en>Electrician, Converter Equipment</span><span data-de>Elektromonteur für Umrichteranlagen</span></div>
+        <div class="xp-card-co">ZAO "VIZ-Stal", PAO NLMK, Russia</div>
+      </div>
+      <div class="xp-card reveal scale-in d4">
+        <div class="xp-card-period">2012 — 2016</div>
+        <div class="xp-card-title"><span data-en>Electrician, Power Plant Maintenance</span><span data-de>Elektromonteur für Kraftwerksausrüstung</span></div>
+        <div class="xp-card-co">UralMetProm, Russia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="maxw">
+    <div class="section-label reveal from-left d1"><span data-en>Capabilities</span><span data-de>Fähigkeiten</span></div>
+    <h2 class="section-title reveal d2"><span data-en>Skills &amp; <em>Licenses</em></span><span data-de>Kenntnisse &amp; <em>Führerscheine</em></span></h2>
+    <div class="skills-grid">
+      <div class="skill-group reveal from-left d3">
+        <h3><span data-en>Driving Licenses &amp; Qualifications</span><span data-de>Führerscheine &amp; Qualifikationen</span></h3>
+        <div class="tags">
+          <span class="tag solid"><span data-en>Category B</span><span data-de>Klasse B</span></span>
+          <span class="tag solid"><span data-en>Category BE</span><span data-de>Klasse BE</span></span>
+          <span class="tag solid"><span data-en>Category C</span><span data-de>Klasse C</span></span>
+          <span class="tag solid"><span data-en>Category CE</span><span data-de>Klasse CE</span></span>
+          <span class="tag solid">Code 95</span>
+          <span class="tag solid"><span data-en>Digital Driver Card</span><span data-de>Digitale Fahrerkarte</span></span>
+          <span class="tag solid">ADR Tank</span>
+        </div>
+      </div>
+      <div class="skill-group reveal from-right d3">
+        <h3><span data-en>Professional Skills</span><span data-de>Berufliche Kenntnisse</span></h3>
+        <div class="tags">
+          <span class="tag"><span data-en>Hazardous Goods Transport (ADR)</span><span data-de>Gefahrguttransport (ADR)</span></span>
+          <span class="tag"><span data-en>Tank Trailer Operation</span><span data-de>Tankauflieger-Betrieb</span></span>
+          <span class="tag"><span data-en>Long-haul International Driving</span><span data-de>Internationaler Fernverkehr</span></span>
+          <span class="tag"><span data-en>Route Planning &amp; Navigation</span><span data-de>Routenplanung &amp; Navigation</span></span>
+          <span class="tag"><span data-en>Logistics Documentation</span><span data-de>Logistikdokumentation</span></span>
+          <span class="tag"><span data-en>Dispatcher Coordination</span><span data-de>Disponenten-Koordination</span></span>
+          <span class="tag"><span data-en>Forklift &amp; Pallet Jack</span><span data-de>Gabelstapler &amp; Hubwagen</span></span>
+          <span class="tag"><span data-en>Business Analysis</span><span data-de>Business-Analyse</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="maxw">
+    <div class="section-label reveal from-left d1"><span data-en>Background</span><span data-de>Hintergrund</span></div>
+    <h2 class="section-title reveal d2"><span data-en>Education &amp; <em>Languages</em></span><span data-de>Ausbildung &amp; <em>Sprachen</em></span></h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal scale-in d2">
+        <div class="edu-year">2014 — 2015</div>
+        <div class="edu-inst"><span data-en>Ural State University of Economics</span><span data-de>Staatliche Wirtschaftsuniversität Ural</span></div>
+        <div class="edu-field"><span data-en>Faculty of Finance — "Finance and Credit"</span><span data-de>Fakultät Finanzen — „Finanzen und Kredit"</span></div>
+      </div>
+      <div class="edu-card reveal scale-in d3">
+        <div class="edu-year">2009 — 2012</div>
+        <div class="edu-inst"><span data-en>Ural State Mining University</span><span data-de>Staatliche Bergbauuniversität Ural</span></div>
+        <div class="edu-field"><span data-en>Electric Drive &amp; Automation of Industrial Plants</span><span data-de>Elektrischer Antrieb &amp; Automatisierung von Industrieanlagen</span></div>
+      </div>
+      <div class="edu-card reveal scale-in d4">
+        <div class="edu-year">2005 — 2009</div>
+        <div class="edu-inst"><span data-en>Polzunov Technical College</span><span data-de>Polzunov Technisches College</span></div>
+        <div class="edu-field"><span data-en>Technical Operation &amp; Maintenance of Electrical Equipment</span><span data-de>Technischer Betrieb &amp; Wartung elektrischer Ausrüstung</span></div>
+      </div>
+      <div class="edu-card reveal scale-in d5">
+        <div class="edu-year">2005</div>
+        <div class="edu-inst"><span data-en>High School Diploma</span><span data-de>Schulabschluss</span></div>
+        <div class="edu-field">Kostanaj, Kazakhstan</div>
+      </div>
+    </div>
+
+    <div style="max-width:480px; margin-top:64px;" class="reveal from-left d3">
+      <h3 style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;"><span data-en>Languages</span><span data-de>Sprachkenntnisse</span></h3>
+      <div class="lang-row">
+        <span class="lang-name">Russian</span>
+        <div class="lang-bar">
+          <div class="lang-dot on"></div><div class="lang-dot on"></div><div class="lang-dot on"></div><div class="lang-dot on"></div><div class="lang-dot on"></div>
+          <span class="lang-level"><span data-en>Native</span><span data-de>Muttersprache</span></span>
+        </div>
+      </div>
+      <div class="lang-row">
+        <span class="lang-name">English</span>
+        <div class="lang-bar">
+          <div class="lang-dot on"></div><div class="lang-dot on"></div><div class="lang-dot on"></div><div class="lang-dot"></div><div class="lang-dot"></div>
+          <span class="lang-level">B1+ · St Giles London Central</span>
+        </div>
+      </div>
+      <div class="lang-row">
+        <span class="lang-name">German</span>
+        <div class="lang-bar">
+          <div class="lang-dot on"></div><div class="lang-dot"></div><div class="lang-dot"></div><div class="lang-dot"></div><div class="lang-dot"></div>
+          <span class="lang-level">A1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="certs reveal d4">
+      <h3 style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;"><span data-en>Certificates &amp; Training</span><span data-de>Zertifikate &amp; Weiterbildungen</span></h3>
+      <div class="cert-item"><div class="cert-yr">2022</div><div><div class="cert-name"><span data-en>Software Test Engineer</span><span data-de>Software-Testingenieur</span></div><div class="cert-org">Yandex Practicum</div></div></div>
+      <div class="cert-item"><div class="cert-yr">2020</div><div><div class="cert-name"><span data-en>Business Analyst in IT</span><span data-de>Business Analyst in IT</span></div><div class="cert-org">IAMBA</div></div></div>
+      <div class="cert-item"><div class="cert-yr">2019</div><div><div class="cert-name"><span data-en>English Courses</span><span data-de>Englischkurse</span></div><div class="cert-org">Bristol Language School</div></div></div>
+      <div class="cert-item"><div class="cert-yr">2018</div><div><div class="cert-name"><span data-en>English Courses</span><span data-de>Englischkurse</span></div><div class="cert-org">St Giles London International</div></div></div>
+      <div class="cert-item"><div class="cert-yr">2018</div><div><div class="cert-name"><span data-en>Maintenance Transformation — Change Management</span><span data-de>Transformation Instandhaltung – Change Management</span></div><div class="cert-org">PAO NLMK</div></div></div>
+      <div class="cert-item"><div class="cert-yr">2016</div><div><div class="cert-name"><span data-en>Maintenance Reliability &amp; Planning</span><span data-de>Zuverlässigkeit und Planung der Instandhaltung</span></div><div class="cert-org">PAO NLMK</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="maxw">
+    <div class="section-label reveal from-left d1"><span data-en>Get in touch</span><span data-de>Kontakt</span></div>
+    <h2 class="section-title reveal d2"><span data-en>Contact <em>Me</em></span><span data-de>Schreib <em>mir</em></span></h2>
+    <div class="contact-cards">
+      <div class="ccard reveal scale-in d2">
+        <div class="ccard-ico">✆</div>
+        <div class="ccard-k"><span data-en>Mobile</span><span data-de>Mobil</span></div>
+        <div class="ccard-v"><a href="tel:+36204592144">+36 20 459 21 44</a></div>
+      </div>
+      <div class="ccard reveal scale-in d3">
+        <div class="ccard-ico">✉</div>
+        <div class="ccard-k">Email</div>
+        <div class="ccard-v"><a href="https://mail.google.com/mail/?view=cm&to=medianik7sergei@gmail.com" target="_blank">medianik7sergei@gmail.com</a></div>
+      </div>
+      <div class="ccard reveal scale-in d4">
+        <div class="ccard-ico">⚲</div>
+        <div class="ccard-k"><span data-en>Location</span><span data-de>Standort</span></div>
+        <div class="ccard-v"><span data-en>Duisburg, Germany</span><span data-de>Duisburg, Deutschland</span></div>
+      </div>
+    </div>
+    <a class="btn btn-amber reveal d5" href="cv-sergei-medianik.pdf" download="CV_Sergei_Medianik.pdf" id="dlBtn2"><span data-en>Download CV (PDF)</span><span data-de>Lebenslauf herunterladen (PDF)</span></a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Sergei Medianik</span>
+  <span>sergeimedianik.com</span>
+</footer>
+
+<script>
+  // ── Parallax: hero video moves slower than scroll ───────
+  const heroVideo = document.querySelector('.hero-video');
+  const heroSection = document.querySelector('.hero');
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY;
+    if (s < heroSection.offsetHeight && heroVideo) {
+      heroVideo.style.transform = `translateY(${s * 0.35}px) scale(1.05)`;
+    }
+  }, { passive: true });
+
+  // animations disabled
+
+  // ── Nav shrink ───────────────────────────────────────────
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.height = window.scrollY > 60 ? '50px' : '64px';
+  }, { passive: true });
+
+  // ── Nav toggle (mobile) ──────────────────────────────────
+  function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+  // ── Cursor spotlight ─────────────────────────────────────
+  const glow = document.getElementById('cursor-glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+  document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { glow.style.opacity = '1'; });
+
+  // ── Language switcher ────────────────────────────────────
+  function setLang(lang) {
+    document.body.classList.toggle('de', lang === 'de');
+    document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+    document.getElementById('btnDE').classList.toggle('active', lang === 'de');
+    localStorage.setItem('lang', lang);
+  }
+  // restore saved language
+  const savedLang = localStorage.getItem('lang');
+  if (savedLang === 'de') setLang('de');
+
+  // PDF download via direct href
+</script>
+</body>
+</html>
