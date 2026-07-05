@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sergei Medianik — International Truck Driver</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -429,9 +433,27 @@ footer {
     border-bottom: 1px solid rgba(255,255,255,0.1);
   }
 }
+.hero-mobile-photo { display: none; }
+
 @media (max-width: 768px) {
   section { padding: 64px 24px; }
-  .hero { padding: 100px 24px 80px; }
+  .hero {
+    display: block;
+    min-height: auto;
+    padding: 64px 0 56px;
+  }
+  .hero-video, .hero-overlay { display: none; }
+  .hero-mobile-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .hero-content { position: static; max-width: 100%; padding: 32px 24px 0; }
+  .hero-eyebrow { flex-wrap: wrap; row-gap: 6px; }
+  .hero-eyebrow span { min-width: 0; }
   .about-inner { grid-template-columns: 1fr; padding: 40px 24px; gap: 32px; }
   .about-photo-bg { height: 50vh; }
   .skills-grid, .edu-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -452,7 +474,10 @@ footer {
   nav { padding: 0 16px; }
   .nav-logo { font-size: 13px; letter-spacing: 2px; }
   .lang-switch { margin-left: 12px; }
-  .hero { padding: 88px 20px 64px; }
+  .hero { padding: 64px 0 48px; }
+  .hero-content { padding: 28px 20px 0; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: 1.5px; gap: 8px; margin-bottom: 18px; }
+  .hero-eyebrow::before { width: 24px; }
   .hero h1 { letter-spacing: -0.5px; }
   .hero-sub { font-size: 15px; }
   .hero-ctas { flex-direction: column; gap: 12px; }
@@ -465,10 +490,6 @@ footer {
   .xp-head { gap: 12px; }
   .ccard { padding: 28px 18px; }
   footer { padding: 20px; }
-  /* Skip the video download/decoding on small phones — show the static
-     hero photo instead to save mobile data */
-  .hero-video { display: none; }
-  .hero { background-image: url('profile-photo.png'); background-size: cover; background-position: center top; }
 }
 
 /* LANG SWITCHER */
@@ -541,8 +562,14 @@ body.de [data-de] { display: revert; }
   border-radius: 50%;
   background: radial-gradient(circle, rgba(118,169,250,0.08) 0%, rgba(118,169,250,0.03) 40%, transparent 70%);
   transform: translate(-50%, -50%);
+  opacity: 0;
   transition: opacity 0.3s ease;
   mix-blend-mode: screen;
+}
+/* No pointer/mouse on touch devices — the spotlight has nothing to follow,
+   so skip it entirely instead of leaving a static glow stuck on screen. */
+@media (hover: none), (pointer: coarse) {
+  #cursor-glow { display: none; }
 }
 </style>
 </head>
@@ -567,8 +594,12 @@ body.de [data-de] { display: revert; }
 
 <!-- HERO -->
 <section class="hero">
-  <video class="hero-video" autoplay loop muted playsinline poster="profile-photo.png">
-    <source src="highway-loop.mp4" type="video/mp4">
+  <picture>
+    <source srcset="profile-photo.webp" type="image/webp">
+    <img class="hero-mobile-photo" src="profile-photo.jpg" alt="Sergei Medianik" fetchpriority="high" loading="eager" decoding="async">
+  </picture>
+  <video class="hero-video" autoplay loop muted playsinline poster="profile-photo.jpg">
+    <source src="highway-loop.mp4" type="video/mp4" media="(min-width: 769px)">
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -593,7 +624,10 @@ body.de [data-de] { display: revert; }
 <!-- ABOUT -->
 <section id="about">
   <div class="about-photo-bg">
-    <img src="profile-photo.png" alt="Sergei Medianik">
+    <picture>
+      <source srcset="profile-photo.webp" type="image/webp">
+      <img src="profile-photo.jpg" alt="Sergei Medianik" loading="lazy" decoding="async">
+    </picture>
   </div>
   <div class="about-inner">
     <div class="about-left">
